@@ -1,5 +1,5 @@
 ---
-title: "Plasticity and flexibility in the flower bat *Glossophaga commissarisi*"
+title: "Behavioural plasticity and flexibility are independent traits in the flower bat *Glossophaga commissarisi*"
 header-includes:
    - \usepackage{lineno}
    - \linenumbers
@@ -13,7 +13,7 @@ output:
     toc: no
 
 bibliography: PlastFlex.bib
-csl: proceedings-of-the-royal-society-b.csl
+# csl: proceedings-of-the-royal-society-b.csl
 ---
 Sabine Wintergerst^1^, Vladislav Nachev^1\*\S^, York Winter^1\*\S^
 
@@ -24,7 +24,7 @@ Sabine Wintergerst^1^, Vladislav Nachev^1\*\S^, York Winter^1\*\S^
 
 **Present Address:** ^\S^Dept. of Biology, Humboldt University, Philippstr. 13, 10099 Berlin, Germany
 
-```{r setup, include=FALSE}
+```{r, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.pos = "h")
 ```
 
@@ -34,44 +34,71 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.pos = 
 plasticity, flexibility, individual differences, sampling, bat
 
 # 1. Introduction
-Individuals of the same species when exposed to the same set of environmental stimuli can consistently differ in their behavioural responses. When such individual differences remain stable with time and across contexts they can be referred to as animal personalities [@roche_demystifying_2016] and have been well-documented in a variety of species ranging from insects to mammals [@muller_personality_2010; @sih_behavioral_2004; @reale_integrating_2007]. Consistent individual differences in behaviour imply that an individual does not express the full range of behavioural trait values present in its population [@dingemanse_behavioural_2010] and therefore does not always behave optimally [@sih_ecological_2012].
-Despite these limitations, behaviour is usually plastic to some extent and animals can adapt their behaviour in response to changes in environmental stimuli. Individuals thus can also differ at this level of responsiveness to environmental conditions. One approach to conceptualize this is the behavioural reaction norm, which is the set of behaviours exhibited by an individual in a given set of environments [@dingemanse_behavioural_2010]. Usually the behavioural reaction norm can be visualized as a line which gives the strength (or presence) of a behaviour at different levels along a continuous environmental gradient like food availability, temperature or time. With linear reaction norms individuals may differ in their intercepts, which correspond to the overall response and in the slopes of the reaction norms, which correspond to the plasticity of the response [@dingemanse_between-individual_2013]. Non-plastic individuals exhibit the same (strength of) behaviours regardless of the levels of the environment and have horizontal reaction norms.  
-When individuals have behavioural reaction norms with non-zero slopes they are also said to exhibit contextual plasticity [@stamps_development_2010]. Individual differences in contextual plasticity have been described in several species in the wild. For example, red knots differ in how much they adjust their vigilance during foraging to perceived predation risks [@mathot_disentangling_2011] and Namibian rock agamas differ in how strongly they adjust the time they spent conspicuous depending on the season [@carter_personality_2012].  
+Individuals of the same species when exposed to the same set of environmental stimuli can consistently differ in their behavioural responses. When such individual differences remain stable with time and across contexts they can be referred to as animal personalities [@roche_demystifying_2016], well-documented from mammals to insects [@muller_personality_2010; @sih_behavioral_2004; @reale_integrating_2007]. Consistent individual differences in behaviour imply that an individual does not express the full range of behavioural trait values present in its population [@dingemanse_behavioural_2010] and therefore does not always behave optimally [@sih_ecological_2012].
+Despite these limitations, behaviour is usually plastic to some extent and animals can adapt their behaviour in response to variations in external stimuli. When an animal changes its behaviour as an immediate response to external stimuli, it is said to exhibit contextual [@stamps_development_2010; @stamps_individual_2016] or activational plasticity [@snell-rood_overview_2013]. In contrast, if a current change in behaviour is a result of past experiences (e.g. as during development or learning), an animal exhibits developmental plasticity [@stamps_individual_2016]. Animals thus can also vary at the individual level in the extent to which their behaviour is influenced by environmental conditions. One approach to conceptualize this individuality is the behavioural reaction norm, which is the set of behaviours exhibited by an individual in a given set of environments [@dingemanse_behavioural_2010]. Usually the behavioural reaction norm can be visualized as a line that gives the strength (or presence) of a behaviour at different levels along a continuous environmental gradient like food availability, temperature or time. With linear reaction norms individuals may differ in their intercepts, which correspond to the overall response level and in the slopes of the reaction norms, which correspond to the plasticity of the response along the environmental gradient [@dingemanse_between-individual_2013]. Non-plastic individuals exhibit the same (strength of) behaviours regardless of the levels of the environment and have horizontal reaction norms.   
+The behavioural reaction norm concept is rarely used in the behavioural neurosciences to ascertain plasticity in individual responding. However, a frequent topic of research is the so-called behavioural flexibility. Although the term "flexibility" has been applied to describe various different phenomena in the past [@stamps_individual_2016; @audet_whats_2017], a growing consensus is that behavioural flexibility is the extent to which a well-learned behavioural response is replaced by another response when environmental contingencies change [@stamps_individual_2016; @coppens_coping_2010; @kinnavane_rat_2019; but see @audet_whats_2017].  
+A common experimental design to study behavioural flexibility is reversal learning, in which previously learned stimulus-reward associations switch contingencies. In the reversal phase of such an experiment an animal has to detect the change in the outcomes, inhibit the previously rewarded response, and adopt a new, recently unrewarded, response. Neurobiological analyses have revealed several different neural circuits that are involved in the underlying cognitive processes of reversal learning and the broadly defined flexibility trait [@laughlin_genetic_2011; @izquierdo_reversal_2012; @kosaki_dissociable_2012; @griffin_cognition_2015; @audet_whats_2017; @kinnavane_rat_2019; @dhawan_more_2019].   
+Individual differences in such cognitive processes (e.g. learning rate, working memory) or neurobiological traits (e.g. neural efficiency, dominance of different brain circuits) might generate individual differences for different types of plasticity [@griffin_cognition_2015; @stamps_individual_2016].
+The major aim of this study is to investigate if behavioural evidence indicates that different types of plasticity in behaviour rely on the same set of mechanisms in a mammal. One hypothesis is that within populations some individuals are generally more responsive to external stimuli and thus more plastic and more flexible in their behaviours than other individuals [@oortmerssen_routine_1990; @koolhaas_individual_2007; @wolf_evolutionary_2008; @coppens_coping_2010; @mery_behavioural_2010; @sih_linking_2012]. Such heightened responsiveness could be detected for example by a positive correlation between contextual plasticity and flexibility [@sih_linking_2012]. More responsive individuals might have both an increased contextual plasticity and flexibility. At the same time, some findings indicate that there can be a trade-off between speed and accuracy [@sih_linking_2012; @griffin_cognition_2015; @mazza_fast_2018], so that fast-learning animals are generally inflexible and slow-learning animals are generally more flexible [@sih_linking_2012; @mazza_fast_2018]. However, the few studies that have included the necessary measurements seem to indicate that the different plasticities across different behaviours do not necessarily correlate into a common behavioural plasticity as a "meta-personality" trait [@mathot_disentangling_2011; @grace_personality_2014; @gibelli_does_2017; @biro_small_2010] and none of them address mammals. These findings illustrate the complexity of behavioural plasticity and the need for further studies that measure more than one type of behavioural plasticity within the same individuals to reveal possible links of underlying mechanisms or the lack thereof.  
 
-- Many different labels for behavioural plasticity and 
-Poorly understood what the underlying mechanisms are and to what extent the different types of behavioural plasticity are independent
+Here we aimed to explicitly test how flexibility and the plasticity of sampling behaviour are correlated within the same individuals. We worked with wild-caught individuals of the nectarivorous bat species *Glossophaga commissarisi*. To meet their high energetic demands, these bats make many  hundred visits per night to flowers with renewable nectar reservoirs [@von_helversen_nectar_1984] and they constantly have to decide between exploiting known profitable flowers and investing in exploration of possible better locations with flowers of unknown state. Individual differences in sampling are already known for this species [@nachev_repeatability_2018], as well as in other animals, such as great tits [@krebs_test_1978] and pigeons [@shettleworth_tracking_1988]. However, how an environmental gradient  of  resource availability might influence sampling is less clear.  
+By using a flight cage with computer-controlled artificial flowers that were either rewarding or non-rewarding, we were able to manipulate the reward schedule of these flowers. This allowed us to confront animals between different experimental days with an environmental gradient of flower quality. Three simple relationships between individual sampling rates and current flower quality have been proposed (figure \@ref(fig:scenarios)). First, the sampling rate could increase with current flower quality when sampling is costly and animals may need high energy reserves to invest in visiting possibly bad options, as previously proposed [@dall_managing_2002]. Second, the sampling rate could be fixed and independent from the current available resource quality, as implemented in some reinforcement-based learning models [@vermorel_multi-armed_2005; @buchkremer_emergence_2010]. Finally, sampling could decrease with current resource quality, as in pigeons [@shettleworth_tracking_1988]. This could imply that low resource quality leads to higher investment in sampling in order to find a better option.    
 
+(ref:labscenarios) Sampling could increase (*a*) with resource availability, could be independent from resource availability (*b*), or decrease with it (*c*).
 
+```{r, scenarios, fig.cap="(ref:labscenarios)", fig.width=4, fig.height=2}
+library(ggpubr)
+library(ggbeeswarm)
+library(gluedown)
+library(glue)
+library(Hmisc)
+library(tidyverse)
+library(flextable)
 
--	A task that lies ahead is to bring together the mostly disparate scientific fields of behavioural ecology, evolutionary biology, personality research and behavioural neuroscience in their common interest regarding individual, flexible responding. 
+theme_serif <- function() {
+  theme_pubr() +
+    theme(axis.text = element_text(size = 24, family = "serif"),
+        axis.line = element_line(colour = "black", size = 1),
+        axis.title = element_text(size = 24, family = "serif"),
+        plot.title = element_text(size = 24, family = "serif"))
+}
 
+tibble(x = rep(c(1, 3), 3), y = c(2, 4, 3, 3, 4, 2), type = rep(c("(a)", "(b)", "(c)"), each = 2))  %>% 
+ggplot(aes(x, y)) +
+  geom_line(size = 0.5) +
+  facet_grid(. ~ type) +
+  xlim(c(1, 3)) +
+  ylim(c(1, 5)) +
+  theme_serif() +
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        axis.line = element_line(size = 0.3),
+        rect = element_blank()) +
+  labs(x = "resource availability", y = "sampling")
+```
 
-- Behavioural flexibility is an ill-defined concept.
+We measured individual sampling rates repeatedly along a gradient of flower quality. This allowed us to fit behavioural reaction norms of individual sampling at different levels of resource availability. We then used the individual steepness of the slopes to quantify individual plasticity [@dingemanse_behavioural_2010]. In a second experiment, we quantified individual behavioural flexibility of the same individuals. We performed a reversal experiment by confronting bats with an unexpected depletion of previously profitable options, and the emergence of newly profitable options, i.e. we changed the most recently learned association between location and reward. By measuring how quickly an individual avoided visiting the previously rewarding flowers in the reversal phase, we could quantify its flexibility. With these two experiments, we were able to investigate in the foraging context of feeding opportunities the link between behavioural flexibility and plasticity of sampling.  
 
-- Behavioural neuroscience does not use the concept of behavioural reaction norm. In this field of
-science, behavioural flexibility includes a range of behavioural control functions of an animal aimed to directly respond and adjust its behaviour to environmental stimuli.
+<!-- -	A task that lies ahead is to bring together the mostly disparate scientific fields of behavioural ecology, evolutionary biology, personality research and behavioural neuroscience in their common interest regarding individual, flexible responding.  -->
 
-- We feel that the terminology used to describe the dimensions of animal personalities should somehow be consistent with the behavioural control function of the underlying brain structures.
+<!-- Individual differences in contextual plasticity have been described in several species in the wild. For example, red knots differ in how much they adjust their vigilance during foraging to perceived predation risks [@mathot_disentangling_2011] and Namibian rock agamas differ in how strongly they adjust the time they spent conspicuous depending on the season [@carter_personality_2012]. -->
 
 Relevant findings and ideas in previous studies:
 
+(Stamps 2016)
+"While the tendency to confuse flexibility and contextual plasticity is understandable, these two types of behavioural plasticity differ in important ways. In particular, the former involves mechanisms for learning and memory, but the latter does not. As was discussed earlier, individual differences in flexibility are typically assessed by first pre-training subjects to reliably perform one behaviour (or a specific set of behaviours) in response to one stimulus situation, and then recording their behaviour following a change in the stimulus situation. As a result, flexibility not only requires learning and remembering stimuli experienced in the past, but it may also involve learning and remembering motor patterns generated in response to those stimuli. The neurological processes and structures required for the formation of a motor routine (habitual behaviour) (Wolpert, Ghahramani & Flanagan, 2001; Dezfouli & Balleine, 2012; Seidler, Bo & Anguera, 2012) add an additional level of complexity to many assays of flexibility, since these processes are not required for contextual plasticity, in which animals respond to different stimuli using motor patterns that are equally familiar to them. **Hence, despite the superficial similarities between contextual plasticity and flexibility, it is not a forgone conclusion that differences in the former would be correlated across individuals with differences in the latter. Indeed, to my knowledge, thus far no one has even asked whether contextual plasticity is correlated with flexibility across individuals or replicate individuals in animals.**"
+
+Conclusion that we can draw from this paper:
+
+Because it depends on learning the reward probabilities, **the reaction norm slope of sampling is not an example of contextual plasticity**. Instead, what we have in our paper are two measures of developmental plasticity, or rather the plasticity of a plasticity and another plasticity.
+
+
 1. Plasticity: 
--	(Stamps 2016) "contextual plasticity" :The extent to which the phenotype of an agent varies as an immediate response to variation in external stimuli [@stamps_individual_2016].
--	(Snell-Rood 2013) "activational plasticity" : "The external context results in the expression of a particular behaviour such that an individual expresses different behaviours as it encounters different environments or conditions. Activational (i.e. contextual) plasticity refers to the differential activation of an underlying network"  [@snell-rood_overview_2013].
--	(Mery and Burns 2010) “innate behavioural plasticity” : "Innate behavioural response occurs when the modification of behaviour in response to environmental factors is the result of evolution at the population scale over multiple generations; that is, a predetermined phenotypic trait is produced in response to a predetermined environmental stimulus."
-- (Ducatez et al. 2020) on extinction risk in birds, a very different definition: "Behavioural plasticity determines the ability of animals to formulate behavioural responses to cope with new or unusual challenges such as food shortages or extreme climatological events"
-- (Gibelli & Dubois 2017) on Zebra finches: "Specifically, we measured neophobia by quantifying the latency of the birds to eat near a novel object in two different environments across a social gradient and assessed their learning performance on two discriminant tasks and a reversal task.  In  agreement  with  our  expectation,  we  found  that  less  neophobic  individuals  were  less  plastic  in  their  responses  compared  to  more neophobic ones. Less neophobic individuals were also faster to reach the learning criterion but only in the less difficult discriminant task they performed first. On the contrary, although we found evidence for individual consistency in learning performances, differences among individuals in the number of trials needed to pass the task in both the more difficult discriminant and reversal tasks were not associated with individual differences in neophobia. Thus, our findings indicate that **individual differences in contextual plasticity do not necessarily result from some individuals being more sensitive to environmental changes**. Instead, we suggest that differences among individuals in their level of plasticity might result from differences in the number of suitable habitats they may occupy." [@gibelli_does_2017]
-- (Grace & Anderson 2014) on Nazca boobies: "**Low covariance between individual contextual plasticity scores for different behaviours suggests that plasticity in this system is not a ‘meta-personality’trait** (Stamps & Groothuis, 2010). Contextual plasticity in a behaviour was positively correlated with the elevation of response in that behaviour" [@grace_personality_2014]
-- (Gomes & Cardoso 2020) "Our work predicts that **complex behaviours whose performance may be constrained by learning and memory limitations are more likely to be individually fixed** (e.g. individual bower birds consistently building the same type of bower [59,60]), rather than changing frequently (e.g.the same individual building different types of bowers) and thus having to be learned multiple times. By contrast, **simple behaviours that can be learned very fast, or that depend less on learning, may more easily be expressed plastically in unstable environments**...
-Our work indicates that for such complex behaviours, where  high performance requires continued practice, the lag-time constraint should cause the evolution of specialized and relatively fixed strategies in unstable environments. By comparison, simpler behaviours that require minimal practice to reach and maintain maximum performance are expected to be used more plastically. For example, even **if the relative abundance of different food sources fluctuates through time, our model predicts higher specialization in species using behaviourally complex  foraging  techniques  (e.g.  predators  of  highly mobile prey) than for species using simpler foraging (e.g.scavengers)**." [@gomes_lag-time_2020]
-- (Wright & Turko 2016) on evolution of amphibious fishes: "Phenotypic plasticity: Biochemical, physiological, behavioural, morphological or life-history traits that change in response to the environment.
-Phenotypic flexibility : Reversible phenotypic plasticity in response to environmental changes,acclimation/acclimatization responses."
+- (Gibelli & Dubois 2017) on Zebra finches: [discussion] "Specifically, we measured neophobia by quantifying the latency of the birds to eat near a novel object in two different environments across a social gradient and assessed their learning performance on two discriminant tasks and a reversal task.  In  agreement  with  our  expectation,  we  found  that  less  neophobic  individuals  were  less  plastic  in  their  responses  compared  to  more neophobic ones. Less neophobic individuals were also faster to reach the learning criterion but only in the less difficult discriminant task they performed first. On the contrary, although we found evidence for individual consistency in learning performances, differences among individuals in the number of trials needed to pass the task in both the more difficult discriminant and reversal tasks were not associated with individual differences in neophobia. Thus, our findings indicate that **individual differences in contextual plasticity do not necessarily result from some individuals being more sensitive to environmental changes**. Instead, we suggest that differences among individuals in their level of plasticity might result from differences in the number of suitable habitats they may occupy." [@gibelli_does_2017]
 
 2. Flexibility:
 - (Coppens et al. 2010) : "Behavioural flexibility is defined as the ability of an individual to directly respond and adjust its behaviour to environmental stimuli"
 "individual differentiation in behavioural flexibility emerges as a function of underlying variability in the activation of a brain circuitry that includes the prefrontal cortex and its key neurochemical signalling pathways" [@coppens_coping_2010].
-- (Lim et al. 2019) on mice: "[Our tests requires animals to] exhibit behavioural flexibility by inhibiting a response driven by a previously learned stimulus-reward association while simultaneously learning a new association. [our second test] requires animals to inhibit a previouslylearned response behaviour, but this occurs without any need to simultaneously learn a new stimulus-reward association." "analyzing the rate of continuous responses provides a measure of the animal’s tendency to perseverate".
-- (Gapp et al. 2014) : "we next tested the animals on a behavioural sequencing task (BST) using IntelliCages, a task assessing response flexibility. For BST, each animal is first trained to alternatively visit two opposite diagonal corners of an arena to obtain a drink reward. Corners assignment is then switched (reversal) to the other diagonal, and the animal has to shift shuttling from corners in one diagonal to corners in the other diagonal while maintaining a goal-directed strategy."
 - (Kosaki & Watanabe 2012): "Ibotenic acid lesions of the medial prefrontal cortex impaired acquisition of each discrimination task by increasing errors specifically in the early phase of each task. These errors were characterised by perseveration to the previously correct lever. By contrast, lesions of the anterior cingulate cortex resulted in the impairment of discrimination in general without inducing perseveration; the impairment was instead characterised by disruption of general error-correction processes. Hippocampal lesions severely impaired learning by increasing perseverative tendencies that were present throughout the learning stages in each task. These results extend our understanding of **the contributions of the different nodes of the limbic cortico-striatal circuit to different aspects of behavioural flexibility.**" [@kosaki_dissociable_2012]
 - (Longo et al. 2018) on mice: "Reversal learning, a form of behavioural flexibility, depends on OFC functional integrity.
 Deletion of Npy1r gene in Y5R neurons increases inflexibility and OFC neuronal activity.
@@ -85,7 +112,7 @@ Associations of reward and non-reward in reversal learning are neurally dissocia
 Disruption of prior irrelevant or rewarded associations cause pathological deficits.
 Experimental paradigms of cognitive flexibility can be improved to aid translation."
 - (Homberg et al. 2007) on rats: "our data show that the absence of the SERT affects aggression and inhibitory control, but not behavioural flexibility, characteristics that may reflect the trait-like consequences of constitutive changes in central 5-HT levels"
-- (Dhawan et a. 2019) on rats: "There was a robust effect of over-training, with over-trained rats performing reversal learning in fewer trials than rats trained to criterion only. The pattern of errors supported the hypothesis that **more rapid reversing results from the formation of an attentional set**. This is the same attentional mechanism that results in less rapid shifting or switching. We conclude that the **behavioural flexibility demonstrated in reversal learning does not provide a scale on which cognitive flexibility can be measured**." [@dhawan_more_2019]
+- (Dhawan et a. 2019) on rats: "There was a robust effect of over-training, with over-trained rats performing reversal learning in fewer trials than rats trained to criterion only. The pattern of errors supported the hypothesis that **more rapid reversing results from the formation of an attentional set**. This is the same attentional mechanism that results in less rapid shifting or switching. We conclude that the **behavioural flexibility demonstrated in reversal learning does not provide a scale on which cognitive flexibility can be measured**." [@dhawan_more_2019] (reward association and rule learning, behavioural and cognitive flexibility, but not too deep)
 
 3. Speed-accuracy trade-off (one framework that predicts a correlation between plasticity and flexibility):
 - (Sih and Del Giudice 2012) : speed-accuracy trade-off, fast but superficial learning and slow but accurate learning are alternative cognitive styles [@sih_linking_2012].
@@ -94,24 +121,17 @@ of an emerging field" : "**bolder individuals learn a particular contingency fas
 - (Mazza et al. 2018) on voles: "bolder and more active individuals were fast, inflexible and persistent in the associative learning tasks, whereas shyer and less active individuals were slow and flexible. We also found evidence for a speed-accuracy trade-off: correct choices in the cognitive tasks required more time for all individuals compared to incorrect choices, but bolder, more active voles always made their decisions faster than reactive ones. The difference between the time required for a correct and an incorrect choice was most pronounced in initial learning for shyer and less active individuals, but for bolder, more active individuals it was most pronounced in the reversal learning task." From their Introduction though:
 "**One subject may consistently look for the rewarded cue ignoring the, potentially rewarded, other cues, while the second may keep sampling the other cues as well. In an associative task, the first individual will achieve a better performance. In a reversal task, a measure of behavioural flexibility, the second individual will perform better because of the more complete information acquired through extended sampling**" [This is not supported by our data] [@mazza_fast_2018]
 - (David et al. 2014) on Zebra finches: "social animals, like solitary foragers, may be affected by perhaps universal constraints when foraging, such as limited attention. These constraints may contribute to promote between-individual variation in foraging tactics within social groups. Second, the existence of a speed-accuracy trade-off suggests that between-individual behavioural differences are more likely to come from differential allocation between speed and accuracy than from differences in general intrinsic abilities to exploit food resources." [@david_speedaccuracy_2014]
-- (Raine & Chittka 2012) on bumble bees: "These results are inconsistent with a trade-off between learning speed and the reversal of a previously made association. On the contrary, they suggest that **differences in learning performance and cognitive (behavioural) flexibility could reflect more general differences in colony learning ability**. Hence, this study provides additional evidence to support the idea that rapid learning and behavioural flexibility have adaptive value." [@raine_no_2012]
+<!-- - (Raine & Chittka 2012) on bumble bees: "These results are inconsistent with a trade-off between learning speed and the reversal of a previously made association. On the contrary, they suggest that **differences in learning performance and cognitive (behavioural) flexibility could reflect more general differences in colony learning ability**. Hence, this study provides additional evidence to support the idea that rapid learning and behavioural flexibility have adaptive value." [@raine_no_2012] -->
 - (Moiron et al. 2016) on great tits: "some individuals predictably made relatively slow but accurate decisions, whereas others were predictably faster but less accurate. We did not, however, find evidence for the trade-off at the within-individual level. These level-specific relationships imply that different mechanisms acted across levels."
-- (Ivanoff et al. 2008) on humans: "[The speed-accuracy trade-off] is neurally implemented by modulating not only the amount of externally-derived sensory evidence used to make a decision, but also the internal urge to make a response. We propose that these processes combine to control the temporal dynamics of the speed-accuracy trade-off in decision-making."
+<!-- - (Ivanoff et al. 2008) on humans: "[The speed-accuracy trade-off] is neurally implemented by modulating not only the amount of externally-derived sensory evidence used to make a decision, but also the internal urge to make a response. We propose that these processes combine to control the temporal dynamics of the speed-accuracy trade-off in decision-making." -->
 
  
 # 2. Materials and Methods
 
 ```{r, include = FALSE}
-library(ggpubr)
-library(gluedown)
-library(glue)
-library(Hmisc)
-library(tidyverse)
-library(flextable)
 # library(officer)
 
 folder <- "data/"
-
 
 asymptotic_choices <- read.csv2(file = paste0(folder, "PlasticityAsymptoticChoices.csv"),
                                 header = TRUE, sep = ";", dec = ".", na.strings = "NA")
@@ -149,23 +169,22 @@ report_m_ci <- function(tbl, filter_prob = 0.5, report_prob = TRUE, par = "_r_")
 Experiments were conducted with 44 adult, wild-caught, male bats of the species *Glossophaga commissarisi* Gardner at La Selva Biological Station, Province Heredia, Costa Rica. Bats were attracted to trapping locations by sugar water feeders scented with dimethyl disulphide [@von_helversen_sulphur-containing_2000]. Bats were weighed and marked with radio frequency identification (RFID) collars. They were kept in a flight cage (4 x 6m) with mesh walls and thus under the climatic conditions of the surrounding rainforest until the experiment started. Bats spent at least four days and not longer than fifteen days in this keeping flight cage. During this time we weighed bats regularly and provided them with *ad libitum* sugar solution (30% sucrose w/w) with added 3.5g/100ml hummingbird food (NektarPlus, Nekton), and added 3.5g/100ml milk powder (Nido 1+, Nestle). Additionally, bats were given local bee-collected pollen and a piece of banana every three days. Three days before the experiment, we installed two artificial flowers in this flight cage to accustom the bats to feed from them. These flowers delivered 50$\mu L$ sugar solution (30% sucrose w/w) rewards at each visit. Due to automated data collection no blinding was implemented in any experiment. Animals were randomly assigned to the different groups. Animal experimental procedures were reviewed and permission for animal experimentation and RFID-tagging was granted by Sistema Nacional de Areas de Conservación (SINAC) at the Ministerio de Ambiente y Energía (MINAE) Costa Rica.  
 
 ## (b) Experimental setup
-We used two experimental flight cages (4 x 6m), each of which contained a horizontally oriented 2 x 2m rectangular frame (h = 1.5m) on which twelve artificial flowers were mounted, three on each side, with flower heads pointing outwards (Fig. 2).  All flowers were connected via valves to a stepping-motor syringe pump [@winter_foraging_2005; @nachev_cognition-mediated_2017]. Rewards always consisted of 40$\mu L$ of nectar with 20% w/w sugar concentration (sucrose: fructose 1:2). Bat visits were detected with infrared light beam sensors at the flower opening and with a circular RFID antenna around the flower head. We only considered as visits events in which the bats were detected for at least 300ms.  We recorded visits to all flowers, including non-rewarding flowers, during every experimental night from 18:00h to 06:00h. The reward schedule allowed for individual-specific configurations (PhenoSoft Control, Phenosys, Berlin, Germany).
+We used two experimental flight cages (4 x 6m), each of which contained a horizontally oriented 2 x 2m rectangular frame (h = 1.5m) on which twelve artificial flowers were mounted, three on each side, with flower heads pointing outwards (figure \@ref(fig:setup)). All flowers were connected via valves to a stepping-motor syringe pump [@winter_foraging_2005; @nachev_cognition-mediated_2017]. Rewards always consisted of 40$\mu L$ of nectar with 20% w/w sugar concentration (sucrose: fructose 1:2). Bat visits were detected with infrared light beam sensors at the flower opening and with a circular RFID antenna around the flower head. Some visits were not rewarded, depending on the reward schedule (see below). We only considered as visits events in which the bats were detected for at least 300ms.  We recorded visits to all flowers, including non-rewarding flowers, during every experimental night from 18:00h to 06:00h. The reward schedule allowed for individual-specific configurations (PhenoSoft Control, Phenosys, Berlin, Germany).
+
+(ref:labsetup) Overview of the experimental setup. (*a*) Every individual carried a radio frequency identification (RFID) tag and could be identified when in proximity of the antenna of one of the artificial flowers. In case of reward delivery, the valve opened, and nectar was delivered by a computer-controlled pump (not shown) into the flower head. (*b*) Schematic of the flower array. During each experimental night two rewarding flowers (hatched) were individually assigned to each bat. The remaining flowers never gave a reward to the respective individual (bat drawing by Holger Braun).  
+
+```{r setup, out.width="65%", fig.align="center", fig.cap="(ref:labsetup)"}
+knitr::include_graphics("./images/Batflower_figure.pdf")
+```
 
 ## (c) General experimental procedure
 During experiments, twelve male bats were tested at the same time in one flight cage. We tested four cohorts in total, with two cohorts participating simultaneously in two different flight cages. Since we only caught 44 males, four individuals took part in the experiment twice to ensure the same number of individuals in each cohort. We did not analyse data from these non-focal individuals from their second participation. 
 On any given night, each bat only received rewards from two out of the twelve artificial flowers. Every bat had its own selection of two rewarding flowers to prevent social learning and reduce crowding.  However, since twelve bats used the flowers simultaneously, every flower was used by two different individuals. Pairs of individuals sharing only one flower changed between the nights. The rewarding flowers of each bat were always on opposite sides of the frame and changed every night to the two other sides of the frame to prevent habituation to specific locations.  
 Rewards were delivered with three different probabilities (30%, 50% and 83%). This corresponds to the same increase by a factor of 1.67 from 30% to 50% and from 50% to 83% [@rivalan_principles_2017]. Rewards were drawn from binary sequences (one sequence for each probability) generated using the `sample` function in R [@r_core_team_r:_2020]. The first visit of an individual at its rewarding flower was always rewarded. For standardization, the same sequence was used for all bats and flowers of the same probability.  
 
-(ref:iexample) An example of sampling behaviour over the course of one night (bat six on night four, at 50% probability). Flower visits were grouped into blocks of twenty and the number of visits to the two rewarding flowers was determined. The second of two consecutive blocks with more visits to rewarding flowers than the individual daily mean (horizontal line) marked the beginning of the asymptotic phase (vertical dashed line). The sampling rate was calculated as the relative proportion of visits to non-rewarding flowers during the asymptotic phase.      
+(ref:labiexample) An example of sampling behaviour over the course of one night (bat six on night four, at 50% probability). Flower visits were grouped into blocks of twenty and the number of visits to the two rewarding flowers was determined. The second of two consecutive blocks with more visits to rewarding flowers than the individual daily mean (horizontal line) marked the beginning of the asymptotic phase (vertical dashed line). The sampling rate was calculated as the relative proportion of visits to non-rewarding flowers during the asymptotic phase.      
 
-```{r iexample, fig.cap="(ref:iexample)", fig.width=5}
-theme_serif <- function() {
-  theme_pubr() +
-    theme(axis.text = element_text(size = 24, family = "serif"),
-        axis.line = element_line(colour = "black", size = 1),
-        axis.title = element_text(size = 24, family = "serif"),
-        plot.title = element_text(size = 24, family = "serif"))
-}
+```{r iexample, fig.cap="(ref:labiexample)", fig.width=5}
 
 # how many visits in asymptotic phase
 choices_plast_summary <- asymptotic_choices %>% 
@@ -196,8 +215,8 @@ ind_example %>%
   theme_serif()
 ```
 
-## (d) Behavioural plasticity (change in sampling) [a potential criticism could be that we conflate errors with sampling. A potential solution: only count as sampling visits to the two sides where there are no rewarding flowers]
-We defined a sampling event as a visit to a non-rewarding flower. Since the positions of rewarding flowers changed every night, bats had to learn the locations of their two rewarding flowers out of the twelve available daily. We performed our main analyses on choice behaviour only after this initial learning phase had been completed, using only the data of the asymptotic phase. We assumed that all visits made to non-rewarding flowers during the asymptotic phase were for exploration and collecting information about the current state of these flowers, i.e. sampling.  For the analysis, we grouped individual visits in blocks of 20. The beginning of the asymptotic phase was determined as the second of two consecutive blocks with a number of visits to the rewarding flowers higher than the daily mean (Figure \@ref(fig:iexample)).  
+## (d) Behavioural plasticity (change in sampling)
+We defined a sampling event as a visit to a non-rewarding flower. Since the positions of rewarding flowers changed every night, bats had to learn the locations of their two rewarding flowers out of the twelve available daily. We performed our main analyses on choice behaviour only after this initial learning phase had been completed, using only the data of the asymptotic phase. We assumed that all visits made to non-rewarding flowers during the asymptotic phase were for exploration and collecting information about the current state of these flowers, i.e. sampling.  For the analysis, we grouped individual visits in blocks of 20. The beginning of the asymptotic phase was determined as the second of two consecutive blocks with a number of visits to the rewarding flowers higher than the daily mean (figure \@ref(fig:iexample)).  
 Since a sampling animal seeks new feeding opportunities, the frequency of sampling may change when overall food availability changes. To investigate how bats adapted their sampling rates to food availability, we set three different probabilities of obtaining a reward (30%, 50%, and 83%) in three different experimental runs. All individuals of one experimental group (12 bats) started with 50% reward probability for five days. For the next eight days, the sequence of probabilities (four days for each probability after 50%) was counter-balanced, so that six bats experienced probabilities in the sequence 50-30-83 and the other six bats in each cohort experienced 50-83-30. We excluded from analysis the first day of the 50% condition when bats still familiarized themselves with experimental conditions. Thus, for every individual, we obtained four measurements of nightly sampling rates for each reward probability (528 data points over 12 nights). Due to technical problems, some complete nights or time periods within some nights had to be excluded for some bats (67 individual nights in total, including 7 partial exclusions). Between experimental runs at different reward probabilities bats received for one night the same food as in the keeping flight cage.   
 
 ## (e) Behavioural flexibility
@@ -207,14 +226,14 @@ This experiment was performed for four consecutive nights immediately after the 
 We used the behavioural reaction norm approach to quantify the plasticity of sampling behaviour for each individual along the gradient of three different reward probabilities [@dingemanse_behavioural_2010]. With this approach generalized linear mixed models (GLMM) with random slopes and intercepts are used to fit regression lines for every individual. The slope of such lines is a measure of individual plasticity [@reale_evolutionary_2010], indicating the degree to which an average behaviour is modified under different environmental conditions. Here we used Bayesian Markov chain Monte Carlo generalized linear-mixed models (`MCMCglmm` [@hadfield_mcmc_2010]) with the binomial error distribution of the `multinomial2` family to fit random intercepts and slopes. The dependent variable for the model was specified as a two-column matrix with the number of visits to non-rewarding flowers and the number of visits to rewarding flowers. Reward probability, weight, and the interaction between cohort  and sequence of reward probabilities (50-30-83 or 50-83-30 groups) were included as fixed variables. Only reward probability was mean-centred so that the intercept of the individual regression lines was determined at the middle of the environmental gradient. This was necessary for the calculation of the intercept-slope correlation. Individuals were included as a random effect and the influence of reward probability was allowed to differ between individuals. As priors, we used an inverse-Wishart distribution for the residual variance and a parameter expanded prior for the random effect. From this model, we derived a slope value for every individual, which represents the change in log odds of the individual probability to sample.
 The latent scale repeatability of sampling at each of the three reward probabilities was quantified by fitting three `MCMCglmm`s to the respective data subsets with the same specifications as before but without reward probability as a fixed effect. Since the chosen model had additive over-dispersion the repeatability was calculated by dividing the between-individual variance through the total variance, which is the sum of between-individual variance, within-individual variance, and the distribution specific variance of $\pi2/3$ [@nakagawa_repeatability_2010]. From this model we also estimated the correlation between the individual intercepts and slopes [@dingemanse_quantifying_2013; @houslay_avoiding_2017].  
 For the analysis of flexibility we used another `MCMCglmm` model with binomial error distribution, with a two-column matrix with the number of flexibility visits and the number of perseverance visits. We included experimental day number as an independent variable to account for possible habituation to the experimental design. Individuals were included as random effects and we controlled for the influence of sampling in phase 1. Repeatability was calculated as for the repeatability of sampling. Model fits and convergence were assessed by analysis of autocorrelation, effective sample size, and visual inspection of trace plots. For more details about the `MCMCglmm` specification see data repository.  
-Finally, the correlation between individual behavioural plasticity (the slope for the change of sampling rate as a function of reward probability) and individual flexibility scores (number of visits to newly rewarding flowers) was assessed by combining the two previous models into a two-dimensional `MCMCglmm` model with the matrix of sampling and non-sampling visits (binomial error distribution) and the matrix of flexibility and perseverance scores (binomial error distribution) as the dependent variables. We only took the significant fixed predictors from the previous models - the reward probability for the plasticity estimation and the experimental day for the flexibility estimation. The correlation between the two dependent variables was estimated from the posterior distributions [@dingemanse_quantifying_2013; @houslay_avoiding_2017] and then sign inverted. This last step was made for the ease of interpretation, because the more negative slopes corresponded to the more plastic individuals. The negative correlation thus represented the actual correlation between our measures for contextual plasticity and behavioural flexibility. We also estimated the correlation between the proportion of sampling visits and the flexibility score. 
-All statistical analyses were conducted using R version 4.0.2 [@r_core_team_r:_2020].  
+Finally, the correlation between individual behavioural plasticity (the slope for the change of sampling rate as a function of reward probability) and individual flexibility scores (number of visits to newly rewarding flowers) was assessed by combining the two previous models into a two-dimensional `MCMCglmm` model with the matrix of sampling and non-sampling visits (binomial error distribution) and the matrix of flexibility and perseverance scores (binomial error distribution) as the dependent variables. We only took the significant fixed predictors from the previous models - the reward probability for the plasticity estimation and the experimental day for the flexibility estimation. The correlation between the two dependent variables was estimated from the posterior distributions [@dingemanse_quantifying_2013; @houslay_avoiding_2017] and then sign inverted. This last step was made for ease of interpretation, because the more negative slopes corresponded to the more plastic individuals. The negative correlation thus represented the actual correlation between our measures for plasticity and behavioural flexibility. We also estimated the correlation between the proportion of sampling visits and the flexibility score. 
+All statistical analyses were conducted using R version 4.0.3 [@r_core_team_r:_2020].  
 
 # 2. Results
-## (a) Individual differences in contextual plasticity measured as sampling rate
-During the three different reward probability conditions bats visited flowers on average (mean $\pm$ SD) 815 $\pm$ 279 times at 30%, 603 $\pm$ 137 times at 50%, and 342 $\pm$ 114 times at 83% probability in one night. In order to quantify individual differences in sampling rate we distinguished between visits to rewarding and non-rewarding flowers and calculated the proportion of visits to non-rewarding flowers. Individuals differed from each other in sampling rate at each of the three reward probabilities (Figure \@ref(fig:samplings)). The adjusted repeatabilities were `r report_m_ci(rep_estimates, filter_prob = 0.83)`, `r report_m_ci(rep_estimates, filter_prob = 0.5)`, and `r report_m_ci(rep_estimates, filter_prob = 0.3)` probability. This means that within a probability condition, individuals behaved similarly on all experimental nights.  
+## (a) Individual differences in sampling rate and its plasticity
+During the three different reward probability conditions bats visited flowers on average (mean $\pm$ SD) 815 $\pm$ 279 times at 30%, 603 $\pm$ 137 times at 50%, and 342 $\pm$ 114 times at 83% probability in one night. In order to quantify individual differences in sampling rate we distinguished between visits to rewarding and non-rewarding flowers and calculated the proportion of visits to non-rewarding flowers. Individuals differed from each other in sampling rate at each of the three reward probabilities (figure \@ref(fig:samplings)). The adjusted repeatabilities were `r report_m_ci(rep_estimates, filter_prob = 0.83)`, `r report_m_ci(rep_estimates, filter_prob = 0.5)`, and `r report_m_ci(rep_estimates, filter_prob = 0.3)` probability. This means that within a probability condition, individuals behaved similarly on all experimental nights.  
 
-(ref:samplings) Individual variation in sampling behaviour at the different reward probabilities (30% *a*, 50% *b*, and 83% *c*). Each dot is the sampling rate of one bat on one night and each vertical stack of (up to) four dots of the same colour corresponds to one individual. Neighbouring individuals are shown in alternating different colours, for better visual discrimination. The sampling rate is defined as the proportion of visits to non-rewarding flowers after reaching the performance criterion (Figure \@ref(fig:iexample)). In each panel bats are ordered by increasing median sampling rates. The order is not preserved between panels. The boxplot gives the median and interquartile ranges for the 44 individual means at each reward probability. 
+(ref:samplings) Individual variation in sampling behaviour at the different reward probabilities (30% *a*, 50% *b*, and 83% *c*). Each dot is the sampling rate of one bat on one night and each vertical stack of (up to) four dots of the same colour corresponds to one individual. Neighbouring individuals are shown in alternating different colours, for better visual discrimination. The sampling rate is defined as the proportion of visits to non-rewarding flowers after reaching the performance criterion (figure \@ref(fig:iexample)). In each panel bats are ordered by increasing median sampling rates. The order is not preserved between panels. The boxplot gives the median and interquartile ranges for the 44 individual means at each reward probability. 
 
 ```{r samplings, fig.cap="(ref:samplings)", fig.width=14}
 
@@ -276,7 +295,7 @@ ggarrange(plotlist = plots, nrow = 1, labels = c("(a)", "(b)", "(c)"))
 
 ```
 
-Reward probability was the only fixed effect that significantly influenced the proportion of visits to non-rewarding flowers (sampling rate) in the random regression model (Table 1). Weight, cohort, and sequence of experienced reward probabilities (group) were not significant. Sampling rate decreased with the increase of reward probability, as indicated by the reaction norms (Figure \@ref(fig:samppreds)) and the negative slope estimate for reward probability (Table 1). Thus, individuals visited non-rewarding flowers most in the poor environment and reduced visits in a richer environment. The steepness of individual slopes is a measure of the extent of behavioural plasticity. There was a significant between-individual variation in behavioural plasticity for the bats in our sample. This is indicated by the slope variance greater than zero (Table 1, Figure \@ref(fig:samppreds)b). There was no significant correlation between slope and intercept (Table 1). 
+Reward probability was the only fixed effect that significantly influenced the proportion of visits to non-rewarding flowers (sampling rate) in the random regression model (table 1). Weight, cohort, and sequence of experienced reward probabilities (group) were not significant. Sampling rate decreased with the increase of reward probability, as indicated by the reaction norms (figure \@ref(fig:samppreds)) and the negative slope estimate for reward probability (table 1). Thus, individuals visited non-rewarding flowers most frequently in the poor environment and reduced visits in a richer environment. The steepness of individual slopes is a measure of the extent of behavioural plasticity. There was a significant between-individual variation in behavioural plasticity for the bats in our sample. This is indicated by the slope variance greater than zero (table 1, figure \@ref(fig:samppreds)b). There was no significant correlation between slope and intercept (table 1). 
 
 
 ```{r plastglmm}
@@ -293,7 +312,7 @@ samp_estimates %>%
   add_footer_row(values = 'Note: random effects are prefixed with "var__" for variance estimates and "cor__" for correlation estimates. Fixed estimates whose credible intervals do not span zero are shown in bold', colwidths = 3)
 ```
 
-(ref:samppreds) Behavioural reaction norms for the 44 bats. (*a*) Each dot is the mean sampling rate of one bat over the four experimental days at the same reward probability (abscissa). Each line represents the predicted values (without interpolation) for one individual from the `MCMCglmm` model (see Results). (*b*) Distribution of the estimated individual reaction norm slopes. A more negative slope corresponds to higher contextual plasticity.        
+(ref:samppreds) Behavioural reaction norms for the 44 bats. (*a*) Each dot is the mean sampling rate of one bat over the four experimental days at the same reward probability (abscissa). Each line represents the predicted values (without interpolation) for one individual from the `MCMCglmm` model (see Results). (*b*) Distribution of the estimated individual reaction norm slopes. A more negative slope corresponds to higher plasticity.        
 
 ```{r, samppreds, fig.cap="(ref:samppreds)", fig.width=12}
 plasticity_predictions <- read.csv2(file = paste0(folder, "PlasticityPredictions.csv"),
@@ -361,7 +380,7 @@ ind_raw <- slope_flex %>%
          median = median(flexibility))
 
 summ_data <- ind_raw %>%
-  select(IdLabel, median, mean) %>%
+  distinct(IdLabel, median, mean) %>%
   mutate(IdLabel = summ_ind)
 
 cor_flexibility.slope <- flex_estimates %>%
@@ -400,29 +419,185 @@ ggarrange(fig6a, fig6b, labels = c("(a)", "(b)"))
 ```
   
 ## (b) Individual differences in behavioural flexibility
-In order to assess behavioural flexibility between individuals we quantified the number of visits to newly rewarding flowers and to non-rewarding flowers that had previously been rewarding. Over all four experimental nights  the most flexible individual had an average flexibility score of 60 (it made 0% perseverative visits), and the least flexible individual had an average score of 42 (30% perseverative visits, Figure \@ref(fig:flexibilities)a). Bats became more flexible over the  four experimental days (positive effect for cohort_day in Table 2), however the repeatability of flexibility scores was significant `r report_m_ci(rep_flex, filter_prob = FALSE, report_prob = FALSE)`.    
+In order to assess behavioural flexibility between individuals we quantified the number of visits to newly rewarding flowers and to non-rewarding flowers that had previously been rewarding. Over all four experimental nights  the most flexible individual had an average flexibility score of 60 (it made 0% perseverative visits), and the least flexible individual had an average score of 42 (30% perseverative visits, figure \@ref(fig:flexibilities)a). Bats became more flexible over the  four experimental days (positive effect for cohort_day in table 2), however the repeatability of flexibility scores was significant `r report_m_ci(rep_flex, filter_prob = FALSE, report_prob = FALSE)`.    
 
-## (c) No positive correlation between contextual plasticity and flexibility
-Behavioural contextual plasticity and behavioural flexibility are both measurements of how an individual responds to changes in the environment. To assess the question whether the two types of responsiveness may be linked to a common underlying mechanism we tested for a correlation between the individual scores for behavioural plasticity and flexibility. In our contextual plasticity experiment the plastic individuals increased their sampling behaviour more strongly as food became less abundant. During our experiment on flexibility the more flexible individuals switched more quickly to the newly rewarding flowers by giving up the formerly rewarding flowers faster.  Both behaviours might be expected to be equally dependent on a high level of sensitivity to cues of food availability. Therefore, given that these two traits differed in their strengths between individuals, we would expect that an individual with a strong contextual plasticity would also express a high degree of behavioural flexibility and *vice versa*.  However, we did not detect such an effect. There was no positive correlation between our two experimental measures of responsiveness (Figure \@ref(fig:flexibilities)b, $\rho$`r report_m_ci(cor_flexibility.slope, filter_prob = FALSE, report_prob = FALSE, par = "")`). Similarly, there was no positive correlation between the flexibility scores and the proportions of sampling visits in the first experiment $\rho$`r report_m_ci(cor_flexibility.intercept, filter_prob = FALSE, report_prob = FALSE, par = "")`), indicating that the bats that sampled more were not also more flexible. Thus, our behavioural analysis on the individual level did not provide any support for the notion that behavioural contextual plasticity and behavioural flexibility share a common underlying mechanism of sensitivity to environmental cues.   
+## (c) No positive correlation between the plasticity of sampling and flexibility
+The plasticity of sampling and behavioural flexibility are both measurements of how an individual responds to changes in the environment. To assess the question whether the two types of responsiveness may be linked to a common underlying mechanism we tested for a correlation between the individual scores for behavioural plasticity and flexibility. In our plasticity experiment the plastic individuals increased their sampling behaviour more strongly as food became less abundant. During our experiment on flexibility the more flexible individuals switched more quickly to the newly rewarding flowers by giving up the formerly rewarding flowers faster.  Both behaviours might be expected to be equally dependent on a high level of sensitivity to cues of food availability. Therefore, given that these two traits differed in their strengths between individuals, we would expect that an individual with a strong plasticity of sampling would also express a high degree of behavioural flexibility and *vice versa*.  However, we did not detect such an effect. There was no positive correlation between our two experimental measures of responsiveness (figure \@ref(fig:flexibilities)b, $\rho$`r report_m_ci(cor_flexibility.slope, filter_prob = FALSE, report_prob = FALSE, par = "")`). Similarly, there was no positive correlation between the flexibility scores and the proportions of sampling visits in the first experiment $\rho$`r report_m_ci(cor_flexibility.intercept, filter_prob = FALSE, report_prob = FALSE, par = "")`), indicating that the bats that sampled more were not also more flexible. Thus, our behavioural analysis on the individual level did not provide any support for the notion that the plasticity of sampling and behavioural flexibility share a common underlying mechanism of sensitivity to environmental cues.   
 
 # 3. Discussion
 
-
+(from first draft)
 The two choice situations
-In both experiments, bats were during their active feeding phase motivated by hunger to seek food and active in a well-known foraging environment with its 12 potentially active feeders. During foraging, an animal is motivated to collect food from known feeding locations (exploitation) but it also has a behavioural tendency to search for and explore new opportunities for their current food potential (exploration). This was the case during both of our experiments. While measuring the reaction norm for behavioural plasticity individual bats had already found their feeders that reliably provided food. Feeder visitation provided them with an experience of both positive reinforcements when rewarded but also negative reinforcements when the reward was withheld. Taken together this provided some overall reinforcement value for the food locations and satisfied the bats’ motivation to feed which in turn counterbalanced the motivation to explore. During the different experimental conditions, this level of satisfaction differed because the ratio of positive and negative reinforcements at active feeders differed. In turn, the reinforcing effect of visiting active feeders differed and therefore also the counterbalancing effect of the feeding experience on the motivation to explore. In the behavioural flexibility experiment, the situation was on one hand very similar but contained an additional component. An individual had also found its feeders that reliably provided food. In this situation food provisioning suddenly stopped. Each subsequent visit now led to negative reinforcement. However, bats also still carried their fresh memories of successfully feeding at those locations just earlier. While in both experiments bats probably carried the same general tendency to explore their environment for food when they are hungry, their own recent experience of successfully feeding at a specific location also affected choice. In the flexibility experiment, the tendency to retain a recently successful routine obviously differed between individuals. Some tended to stay with the former routine while others adopted more quickly a new opportunity. Thus, in the first experiments individuals differed in their balancing of exploitation versus exploration, and they also differed in how strongly the currently experienced reinforcement value at the feeders affected this balance. In the flexibility experiment on the other hand, individuals differed in how strongly their memory of a recently reinforced behaviour pattern continued to control their choices or action selection. By this account, it seems plausible that the contextual plasticity and the flexibility measured here are independent traits. 
+In both experiments, bats were during their active feeding phase motivated by hunger to seek food and active in a well-known foraging environment with its 12 potentially active feeders. During foraging, an animal is motivated to collect food from known feeding locations (exploitation) but it also has a behavioural tendency to search for and explore new opportunities for their current food potential (exploration). This was the case during both of our experiments. While measuring the reaction norm for behavioural plasticity individual bats had already found their feeders that reliably provided food. Feeder visitation provided them with an experience of both positive reinforcements when rewarded but also negative reinforcements when the reward was withheld. Taken together this provided some overall reinforcement value for the food locations and satisfied the bats’ motivation to feed which in turn counterbalanced the motivation to explore. During the different experimental conditions, this level of satisfaction differed because the ratio of positive and negative reinforcements at active feeders differed. In turn, the reinforcing effect of visiting active feeders differed and therefore also the counterbalancing effect of the feeding experience on the motivation to explore. In the behavioural flexibility experiment, the situation was on one hand very similar but contained an additional component. An individual had also found its feeders that reliably provided food. In this situation food provisioning suddenly stopped. Each subsequent visit now led to negative reinforcement. However, bats also still carried their fresh memories of successfully feeding at those locations just earlier. While in both experiments bats probably carried the same general tendency to explore their environment for food when they are hungry, their own recent experience of successfully feeding at a specific location also affected choice. In the flexibility experiment, the tendency to retain a recently successful routine obviously differed between individuals. Some tended to stay with the former routine while others adopted more quickly a new opportunity. Thus, in the first experiments individuals differed in their balancing of exploitation versus exploration, and they also differed in how strongly the currently experienced reinforcement value at the feeders affected this balance. In the flexibility experiment on the other hand, individuals differed in how strongly their memory of a recently reinforced behaviour pattern continued to control their choices or action selection. By this account, it seems plausible that the plasticity and the flexibility measured here are independent traits. 
 
+
+Sampling visits, as currently measured, include errors (visits to flowers neighbouring the rewarding flowers), but such errors were on average only 38% of all visits to non-rewarding flowers and did not affect major results if e.g. flexibility was taken to exclude all visits to a previously rewarding side.
+
+## The relationship between learning rate, exploration, the plasticity of sampling and behavioural flexibility
+To gain a deeper understanding of putative cognitive mechanisms that may generate individual differences in the plasticity of sampling and flexibility, we used a simple reinforcement learning model. We present this model not as an accurate predictor of bat behaviour but to illustrate the difficulty of disentangling mechanistic relationships from behavioural measures. A putative connection between plasticity and flexibility can be a higher sensitivity to rewards [@griffin_cognition_2015].  Such sensitivity could arise from, among other processes, fast learning and low decision threshold [@griffin_cognition_2015]. Presumably, with experience animals form cognitive representations of the available options and expectations for their reward outcomes. With a higher learning rate such an internal representation more quickly arrives at a value that accurately corresponds to the true reward outcome, but at the same time the representation becomes more volatile, being discounted strongly for each experience with an outcome below the expectation. Even with perfect representations of the reward options an animal needs an action selection method that is most likely to maximize the long-term gains, but still allows for exploration. Without exploration, an animal might get stuck at a suboptimal option and completely miss opportunities for higher gains elsewhere. At the same time exploration comes at a cost, because it leads to a lower commitment to already discovered rewarding options and thus decreases the long-term gains. The optimization of the balance between exploitation and exploration is a common feature of reinforcement learning models [e.g. @daw_cortical_2006] and another good candidate, together with learning rate, for a cognitive mechanism that can affect sampling and behavioural flexibility. We therefore performed two virtual experiments mimicking the conditions of the field experiments to test the effect of the learning rate and exploration-exploitation balance on the plasticity of sampling and on behavioural flexibility (see Supplement).  
+Our foraging model incorporated commonly implemented algorithms with only two free parameters: learning rate and exploration-exploitation balance (hereafter exploration). With a higher learning rate a bat would respond quickly to changes in the environment, giving a higher weight to recent as opposed to past experiences. Thus, all else being equal, bats with higher learning rates are expected to respond more strongly to non-rewarded visits at flowers with low reward probabilities, causing higher sampling and thus a higher plasticity of sampling over the gradient of reward probabilities. Similarly, bats with higher learning rates should be more flexible in abandoning previously rewarding flowers, because each non-rewarded visit quickly lowers the estimate for that option, leading to stronger avoidance.   
+All else being equal, more explorative bats are expected to sample more in general, but also be less explorative in richer environments, which should result in a higher plasticity of sampling. It is less obvious how a higher exploration should affect flexibility, other than through the probability of visiting any non-rewarding flower (including the previously rewarding ones) increasing with higher exploration. It is also difficult to formulate expectations about the potential interaction between learning rate and exploration and the correlation between plasticity and flexibility.  
+The simulation results revealed that the learning rate and exploration increased both the sampling behaviour and its plasticity along the gradient of reward probabilities (Fig. \@ref(fig:simplasticity)). With higher exploration the flexibility of the virtual bats generally decreased slightly and this effect was stronger at lower learning rates (Fig. \@ref(fig:simflexibility)). On the other hand, flexibility was highest for bats with intermediate-low learning rates (0.2-0.3, Fig. \@ref(fig:simflexibility)), but decreased somewhat at lower learning rates (<0.2) and also more gradually at higher learning rates (>0.2). It appears that at very low learning rates flexibility dropped down because unrewarded visits at the newly rewarding flowers allowed the previously rewarding flowers to remain attractive for longer. Thus, keeping the learning rate fixed at any value between 0.05 and 0.5, there was a negative correlation between the plasticity of sampling and flexibility (Fig. \@ref(fig:simpf)). This means that if individual bats primarily differ in exploration, then the more explorative bats with a higher plasticity for sampling are expected to also be less flexible in abandoning previously rewarding flowers.  
+
+(ref:labsimplasticity) The effect of learning rate and exploration on sampling and its plasticity. Each symbol represents the proportion of sampling visits in the visit numbers 101-500 for a single virtual bat (*n* = 100) for the given reward probability condition (horizontally jittered). Panels give the learning rate and colours, the exploration. Coloured lines give the linear fits for each combination of learning rate and exploration and the more negative slopes correspond to the higher values for the plasticity of sampling.    
+
+```{r, simplasticity, fig.cap="(ref:labsimplasticity)", fig.width=7, fig.height=4}
+learning_label <- function(string) {
+  paste0("learning rate: ", string)
+}
+temperature_label <- function(string) {
+  paste0("exploration: ", string)
+}
+prob_label <- function(string) {
+  paste0("probability: ", string)
+}
+global_labeller <- labeller(
+  l_rate = learning_label,
+  temperature = temperature_label,
+  prob = prob_label,
+  .default = label_both
+)
+
+samp_sim <- read.csv2(paste0(folder, "PlasticitySimSummary.csv"), dec = ".") %>% 
+  mutate(ind = factor(ind))
+
+# samp_sim %>%
+#   ggplot(aes(prob, sampling, color = as.factor(temperature))) +
+#   geom_jitter(alpha = 0.3) +
+#   stat_summary(size = 0.7) +
+#   theme_bw() +
+#   facet_grid(. ~ l_rate, labeller = global_labeller) +
+#   labs(title = "Effect of learning rate and exploration on sampling at different probabilities",
+#        x = "probability", color = "exploration")
+
+
+# take linear slopes rather than slopes on logit scale
+samp_sim %>%
+  ggplot(aes(prob, sampling, color = as.factor(temperature), group = temperature)) +
+  geom_jitter(width = 0.02, alpha = 0.2) +
+  stat_smooth(method = lm, se = FALSE) +
+  facet_wrap(~l_rate, ncol = 3, labeller = global_labeller) +
+  labs(x = "reward probability", color = "exploration") +
+  theme_pubr() +
+  theme(axis.text = element_text(size = 16, family = "serif"),
+        axis.line = element_line(colour = "black", size = 1),
+        axis.title = element_text(size = 16, family = "serif"),
+        plot.title = element_text(size = 16, family = "serif")) +
+  scale_color_viridis_d()
+
+```
+
+  
+(ref:labsimflexibility) The effect of learning rate and exploration on behavioural flexibility. Each symbol represents the flexibility score (number of visits to the previously rewarding flowers during the first 60 visits after the switch) for a single virtual bat (*n* = 100) for the given exploration (derived from slopes in Fig. ) and learning rate values (colour). Coloured lines give the locally estimated scatterplot smoothed (loess) fits for each combination of learning rate and exploration.  
+
+```{r, simflexibility, fig.cap="(ref:labsimflexibility)", fig.width=4, fig.height=2.5}
+flex_sim <- read.csv2(paste0(folder, "FlexibilitySimSummary.csv"), dec = ".") %>% 
+  mutate(ind = factor(ind))
+
+flex_sim %>%
+  ggplot(aes(l_rate, flexibility, color = as.factor(temperature))) +
+  geom_jitter(alpha = 0.3) +
+  stat_summary(size = 0.7) +
+  stat_smooth(aes(group = as.factor(temperature)), se = FALSE) +
+  theme_bw() +
+  labs(x = "learning rate", y = "flexibility score", color = "exploration") +
+  theme_pubr() +
+  theme(axis.text = element_text(size = 16, family = "serif"),
+        axis.line = element_line(colour = "black", size = 1),
+        axis.title = element_text(size = 16, family = "serif"),
+        plot.title = element_text(size = 16, family = "serif")) +
+  scale_color_viridis_d()
+ 
+```
+  
+  
+(ref:labsimpf) The effect of learning rate and exploration on behavioural flexibility. Each symbol represents the flexibility score (number of visits to the previously rewarding flowers during the first 60 visits after the switch) for a single virtual bat (*n* = 100) with a given plasticity (derived from slopes in Fig. \@ref(fig:simplasticity)). Panels give the learning rate and colours, the exploration. Blue lines give the linear fits at each learning rate.  
+
+```{r, simpf, fig.cap="(ref:labsimpf)", fig.width=7, fig.height=4}
+slopes_sim <- samp_sim %>%
+  ungroup() %>%
+  nest_by(ind, l_rate, temperature) %>%
+  mutate(lin_slopes = lm(sampling ~ prob, data = data) %>%
+           coef() %>%
+           pluck(2))
+
+flex_sim %>%
+  ungroup() %>%
+  filter(prob == 0.5) %>%
+  select(ind, l_rate, temperature, flexibility) %>%
+  left_join(slopes_sim) %>%
+  mutate(negslopes = -lin_slopes) %>% 
+  ggplot(aes(negslopes, flexibility, color = as.factor(temperature))) +
+  geom_point(alpha = 0.5) +
+  stat_smooth(aes(color = NULL), method = lm, se = FALSE) +
+  labs(x = "plasticity of sampling (-slope)", y = "flexibility score", color = "exploration") +
+  facet_wrap(~l_rate, ncol = 3, labeller = global_labeller) +
+  theme_pubr() +
+  theme(axis.text = element_text(size = 16, family = "serif"),
+        axis.line = element_line(colour = "black", size = 1),
+        axis.title = element_text(size = 16, family = "serif"),
+        plot.title = element_text(size = 16, family = "serif")) +
+  scale_color_viridis_d()
+ 
+```  
+    
+On the other hand, keeping the exploration fixed, the correlation between the plasticity of sampling and flexibility changed from slightly negative at low exploration values to positive at high exploration values (Fig. \@ref(fig:simpfexpl)). In other words, there was no particular correlation pattern that could be predicted with the model if bats primarily differed in learning rates, because the outcome depended on the individual variability in exploration and on the . 
+As we have demonstrated, even with relatively simple underlying cognitive mechanisms, behavioural measures of plasticity and flexibility do not have a relationship that is easy to predict. The outcome primarily depends on the repetabilities of the underlying cognitive processes.  
+
+(ref:labsimpfexpl) The effect of learning rate and exploration on behavioural flexibility. Each symbol represents the flexibility score (number of visits to the previously rewarding flowers during the first 60 visits after the switch) for a single virtual bat (*n* = 100) with a given plasticity (derived from slopes in Fig. \@ref(fig:simplasticity)). Panels give the exploration and colours, the learning rate. Blue lines give the locally estimated scatterplot smoothed (loess) fits at each exploration. 
+
+```{r, simpfexpl, fig.cap="(ref:labsimpfexpl)", fig.width=7, fig.height=3}
+
+flex_sim %>%
+  ungroup() %>%
+  filter(prob == 0.5) %>%
+  select(ind, l_rate, temperature, flexibility) %>%
+  left_join(slopes_sim) %>%
+  ggplot(aes(-lin_slopes, flexibility, color = as.factor(l_rate))) +
+  geom_point(alpha = 0.5) +
+  stat_smooth(aes(color = NULL), method = loess, se = FALSE) +
+  facet_grid(. ~ temperature, labeller = global_labeller) +
+  labs(x = "plasticity of sampling (-slope)", y = "flexibility score", color = "learning rate") +
+  theme_pubr() +
+  theme(axis.text = element_text(size = 16, family = "serif"),
+        axis.line = element_line(colour = "black", size = 1),
+        axis.title = element_text(size = 16, family = "serif"),
+        plot.title = element_text(size = 16, family = "serif")) +
+  scale_color_viridis_d(option = "plasma")
+ 
+```  
+  
 
 # 4. Conclusion
 
 
 \newpage
-# Appendix {-}
+# Supplement {-}
 
 \beginsupplement
 
+
+
+## Foraging model
+
+The virtual bats updated their *remembered values* (utilities for each experienced option) with a simple linear operator [@hamblin_finding_2009]:  
+$V_{R_i}(t_n) = (1-\alpha)V_{R_i}(t_{n-1}) + \alpha V_{I_i}(t_n)$,  
+where $V_{R_i}(t_n)$ is the remembered value for option $i$ at time $t_n$, $\alpha$ is the learning rate that weighs the relative importance of the past compared to the current experiences, and $V_{I_i}(t_n)$ is the reward obtained at option $i$ at time $t_n$ (*instantaneous value*), either 1 for a rewarded visit or a 0 for an unrewarded visit. 
+Choice was then simulated by applying the softmax action selection [@daw_cortical_2006; @nachev_cognition-mediated_2017; @nachev_behavioral_2019] to the vector of remembered values to convert them into choice probabilities:  
+$P_i = \frac{e^{V_{R_i}/\tau}}{\sum_{k=1}^{n} {e^{V_{R_k}/\tau}}}$,  
+where $P_i$ is the probability to select option $i$, $n = 12$ is the total number of options, and $\tau$ is the exploration-exploitation balance that determines how strongly the choice relies on the vector of remembered values or resembles randomness. The remembered values were initialized at 0, so that the first visit occurred at random.  
+Thus, the only free parameters in the model were the learning rate $\alpha$ and the exploration-exploitation balance $\tau$ [@daw_cortical_2006; @nachev_behavioral_2019].  
+The model was not spatially explicit and decisions were purely determined by the two processes described above. We performed simulations along a grid of possible learning rates $\alpha \epsilon \{0.05, 0.1, 0.2, 0.3, 0.4, 0.5\}$ and exploration-exploitation factors $\tau \epsilon \{0.0125, 0.025, 0.05, 0.1\}$ with 100 individuals for each combination of parameters. As in the empirical tests, two out of twelve flowers were rewarding with different reward probabilities, depending on the type of test. From the simulated choices we calculated the resulting plasticity of sampling and flexibility for each combination of $\alpha$ and $\tau$.  
+
+### Virtual test of plasticity of sampling
+In the virtual test of plasticity of sampling there were three different conditions with different reward probabilities at the two rewarding flowers (both either 0.3, 0.5, or 0.83). Each virtual bat made 500 choices at each reward condition and the proportion of visits to the non-rewarding flowers after the first 100 choices was taken as the measure of sampling. The linear slopes for the change in sampling between the three reward probability conditions was then taken as the measure of plasticity.
+
+### Virtual test of flexibility
+In the virtual test of flexibility the two initially rewarding flowers became unrewarding after the 100th visit, while two new flowers became rewarding. Each virtual bat made 300 total visits. As in the empirical tests, we calculated as a measure of flexibility the number of visits to the previously rewarding flowers during the 60 visits after the virtual bats discovered one of the new rewarding options (for visits 101-161). In contrast to the empirical tests, we performed the same experiment at three different reward probabilities, 0.3, 0.5, and 0.83, and calculated the flexibility scores at each probability condition.
+
   
 # Acknowledgments
-We thank     
+We thank ...    
 
 # Authorship and contribution
 S.W. Conceptualization, Methodology, Software, Formal Analysis, Data collection, Writing—original draft.
@@ -430,6 +605,6 @@ V.N. Conceptualization, Methodology, Software, Formal Analysis, Data curation, W
 Y.W. Conceptualization, Resources, Methodology, Software (data acquisition), Writing—review and editing, Supervision.   
 
 # Competing interests
-The authors declare that they have no competing interests.   
+YW owns PhenoSys equity.  
 
 # References

@@ -1,8 +1,8 @@
 library(Hmisc)
 library(tidyverse)
 library(broom.mixed)
-# library(brms)
-# library(tidybayes)
+library(MCMCglmm)
+# library(postMCMCglmm)
 
 folder <- "analysis/data/"
 
@@ -11,7 +11,7 @@ full_experiment <- read.csv2(file = paste0(folder, "EventData.csv"), header = TR
   mutate(DateTime = as.POSIXct(DateTime, tz = "UTC"))
 
 repeat_bats <- c("Ind14", "Ind15", "Ind18", "Ind20")
-cages <- tibble(day = 1:68, cage = c(rep(1, 17), rep(2, 17), rep(1, 17), rep(2, 17)))
+cages <- tibble(day = 1:68, cage = rep(c(1, 2, 1, 2), each = 17))
 
 # focus only on the pokes that have duration of at least 300 ms
 onlychoices <- full_experiment %>%
@@ -44,21 +44,102 @@ onlychoices_plast <- onlychoices %>%
   # running visit number, vis_to_first gives 1 for only the rewarding flowers
   mutate(n_vis = 1:n(), 
          vis_to_first = ifelse(rewarding == 1, 1, 0),
-         cohort = factor(cohort)) %>% 
+         cohort = factor(cohort),
+         revisit = loc == lag(loc),
+         next_visit_rewarding = lead(rewarding)) %>% 
   ungroup()
 
 sides <- tibble(loc = 1:12, side = c(rep(1:4, each = 3)),
                 x = c(1, 2, 3, 4, 4, 4, 3, 2, 1, 0, 0, 0),
                 y = c(0, 0, 0, 1, 2, 3, 4, 4, 4, 3, 2, 1))
 
-
-onlychoices_plast %>% 
+rewarding_sides <- onlychoices_plast %>% 
   left_join(sides) %>% 
   group_by(IdLabel, loc, day, side) %>% 
   summarise(rewarding = max(rewarding)) %>% 
   group_by(IdLabel, day, side) %>% 
   summarise(rewarding_side = max(rewarding)) %>% 
   select(IdLabel, day, side, rewarding_side)
+  
+persistance <- onlychoices %>% 
+  filter(pumping == 1, cond == "plast", !(cohort == 4 & IdLabel %in% repeat_bats)) %>% 
+  group_by(day, IdLabel) %>% 
+  mutate(n_vis = 1:n(), 
+         vis_to_first = ifelse(rewarding == 1, 1, 0),
+         cohort = factor(cohort),
+         revisit = loc == lag(loc),
+         next_visit_rewarding = lead(rewarding)) %>% 
+  ungroup()
+
+# how many data points are there? at least 2 days per bat per condition, not too bad
+persistance %>% 
+  count(IdLabel, day, prob_cond) %>% 
+  count(IdLabel, prob_cond) %>% 
+  ggplot(aes(IdLabel, n)) +
+  geom_point() +
+  facet_grid(prob_cond ~ .)
+
+persistance <- persistance %>% 
+  group_by(IdLabel, prob_cond, day) %>% 
+  summarise(persistance = mean(vis_to_first, na.rm = TRUE),
+            revisits = mean(revisit, na.rm = TRUE),
+            n = n())
+
+persistance %>%
+  filter(n > 30) %>% 
+  ggplot(aes(prob_cond, persistance)) +
+  geom_point() +
+  stat_smooth(aes(group = IdLabel), method = lm, se = FALSE)
+
+# the majority of visits to non-rewarding flowers are not "errors", because they happen to sides where no rewarding flowers
+# were to be found
+visits_nonrewarding <- onlychoices_plast %>% 
+  left_join(sides) %>% 
+  left_join(rewarding_sides) %>% 
+  filter(rewarding == 0) 
+
+# not too much between-individual variation in "errors"
+visits_nonrewarding %>% 
+  group_by(IdLabel, day, prob_cond) %>% 
+  summarise(prop_rew_side = mean(rewarding_side), n = n()) %>%
+  arrange(desc(prop_rew_side)) %>% 
+  ggplot(aes(IdLabel, prop_rew_side)) +
+  geom_jitter() +
+  stat_summary()  +
+  ylab("Proportion of vists to nonrewarding flowers that were on the same side as rewarding flowers")
+
+# no effect of probability on "errors"
+visits_nonrewarding %>% 
+  group_by(IdLabel, day, prob_cond) %>% 
+  summarise(prop_rew_side = mean(rewarding_side)) %>%
+  arrange(desc(prop_rew_side)) %>% 
+  group_by(IdLabel, prob_cond) %>% 
+  summarise(prop_rew_side = mean(prop_rew_side)) %>%
+  arrange(desc(prop_rew_side)) %>% 
+  ggplot(aes(prob_cond, prop_rew_side)) +
+  geom_jitter() +
+  stat_summary()  +
+  ylab("Proportion of visits to nonrewarding flowers that were on the same side as rewarding flowers")
+
+# Proportion of visits to nonrewarding flowers that were on the same side as rewarding flowers
+visits_nonrewarding %>% 
+  group_by(IdLabel, day) %>% 
+  summarise(prop_rew_side = mean(rewarding_side)) %>%
+  arrange(desc(prop_rew_side)) %>% 
+  group_by(IdLabel) %>% 
+  summarise(prop_rew_side = mean(prop_rew_side)) %>%
+  pull(prop_rew_side) %>% 
+  summary()
+
+# the proportion does not depend on the total number of visits
+visits_nonrewarding %>% 
+  group_by(IdLabel, day, prob_cond) %>% 
+  summarise(prop_rew_side = mean(rewarding_side), n = n()) %>%
+  filter(n <= 250) %>% 
+  arrange(desc(prop_rew_side)) %>% 
+  ggplot(aes(n, prop_rew_side, color = factor(prob_cond))) +
+  geom_point() +
+  geom_smooth()
 
 # general visit numbers
 onlychoices_plast %>%
@@ -66,10 +147,80 @@ onlychoices_plast %>%
   group_by(prob_cond) %>% 
   summarise(mean = round(mean(n)), sd = round(sd(n)))
 
+# make a string with all unrewarded visits after the last rewarded visit
+accumulate_history <- function(vec) {
+  as.character(accumulate(vec, paste0))
+}
+# streak analysis
+streaks_plast <- onlychoices_plast %>%
+  filter(n_vis > 100, !(cohort == 4 & IdLabel %in% repeat_bats)) %>% 
+  group_by(IdLabel, day, loc) %>%
+  mutate(rew_history = accumulate_history(rewarded),
+         last_reward = str_extract(lag(rew_history), "1?0*$"),
+         last_miss = str_extract(lag(rew_history), "0?1*$"))
+
+streaks_plast %>% 
+  filter(str_length(last_reward) == 2 | str_length(last_miss) == 2) %>% 
+  mutate(rew_history)
+
+miss_streaks_plast <- streaks_plast %>% 
+  filter(str_detect(last_reward, "1")) %>% 
+  mutate(miss_streak = str_length(last_reward) - 1) %>% 
+  group_by(IdLabel, miss_streak, prob_cond) %>% 
+  summarise(perc_stay = mean(revisit),
+            perc_exploit = mean(next_visit_rewarding, na.rm = TRUE),
+            n = n())
+
+win_streaks_plast <- streaks_plast %>% 
+  filter(str_detect(last_miss, "0")) %>% 
+  mutate(win_streak = str_length(last_miss) - 1) %>% 
+  group_by(IdLabel, win_streak, prob_cond) %>% 
+  summarise(perc_stay = mean(revisit),
+            perc_exploit = mean(next_visit_rewarding, na.rm = TRUE),
+            n = n())
+# , IdLabel %in% c("Ind13", "Ind11", "Ind19")
+miss_streaks_plast %>% 
+  filter(n > 10) %>%
+  ggplot() +
+  stat_summary(aes(miss_streak, perc_stay, color = IdLabel)) +
+  geom_smooth(aes(miss_streak, perc_stay, color = IdLabel), method = lm, se = FALSE) +
+  facet_grid(. ~ prob_cond)
+
+miss_streaks_plast %>% 
+  filter(n > 10, !is.na(perc_exploit)) %>%
+  ggplot() +
+  stat_summary(aes(miss_streak, perc_exploit, color = IdLabel)) +
+  geom_smooth(aes(miss_streak, perc_exploit, color = IdLabel), method = lm, se = FALSE) +
+  facet_grid(. ~ prob_cond)
+
+win_streaks_plast %>% 
+  filter(n > 10) %>%
+  ggplot() +
+  stat_summary(aes(win_streak, perc_stay, color = IdLabel)) +
+  geom_smooth(aes(win_streak, perc_stay, color = IdLabel), method = lm, se = FALSE) +
+  facet_grid(. ~ prob_cond)
+
+win_streaks_plast %>%
+  filter(n > 10) %>%
+  ggplot() +
+  stat_summary(aes(win_streak, perc_exploit, color = IdLabel)) +
+  geom_smooth(aes(win_streak, perc_exploit, color = IdLabel), method = lm, se = FALSE) +
+  facet_grid(. ~ prob_cond)
+
+# 
+# streaks_plast %>% 
+#   filter(n > 20, miss_streak == 1) %>%
+#   ggplot() +
+#   stat_summary(aes(prob_cond, perc_stay, color = IdLabel)) +
+#   geom_smooth(aes(prob_cond, perc_stay, color = IdLabel), method = lm, se = FALSE)
+bin_size <- 20
 binned_choices <- onlychoices_plast %>% 
-  mutate(vis_bins = cut(n_vis, breaks = seq(0, 3000, 20))) %>% 
+  left_join(sides) %>% 
+  left_join(rewarding_sides) %>% 
+  mutate(vis_bins = cut(n_vis, breaks = seq(0, 3000, bin_size))) %>% 
   group_by(IdLabel, weight, cond, prob_cond, day, cohort_day, cohort, cage, vis_bins) %>% 
   summarise(n_vis_to_first = sum(vis_to_first),
+            n_vis_to_firstside = sum(rewarding_side),
             n_total = n(),
             max_date = max(DateTime)) %>% 
   group_by(IdLabel, cond, day, cohort_day, cohort, cage, prob_cond) %>%
@@ -87,7 +238,9 @@ asymptotic_choices <- binned_choices %>%
   group_by(IdLabel, weight, cond, day, cohort_day, cohort, cage, prob_cond) %>% 
   summarise(successes = sum(n_vis_to_first),
             failures = sum(n_total) - successes,
-            sampling = failures/sum(n_total))
+            failures2 = sum(n_total) - sum(n_vis_to_firstside),
+            sampling = failures/sum(n_total),
+            sampling2 = failures2/sum(n_total))
 
 groups <- asymptotic_choices %>% 
   filter(cohort_day %in% 6:9) %>%
@@ -104,16 +257,49 @@ asymptotic_choices <- asymptotic_choices %>%
 
 write.table(asymptotic_choices, file = paste0(folder, "PlasticityAsymptoticChoices.csv"), sep = ";", row.names = FALSE)
 
+# are differences comparable to (linear and non-linear) slopes?
+
+emp_diffs <- asymptotic_choices %>% 
+  filter(prob_cond != 0.5) %>%
+  group_by(IdLabel, prob_cond) %>% 
+  summarise(sampling = mean(sampling)) %>%
+  mutate(diff = sampling - lag(sampling)) %>% 
+  filter(!is.na(diff)) %>% 
+  select(IdLabel, diff)
+
 # visualize data for exploration
-focal_ind <- "Ind41"
+focal_ind <- "Ind43"
 binned_choices %>% 
-  filter(IdLabel == focal_ind) %>% 
+  filter(IdLabel == focal_ind, !(cohort == 4 & IdLabel %in% repeat_bats)) %>% 
   mutate(cohort_day = factor(cohort_day)) %>% 
-  ggplot(aes(vis_bins, n_vis_to_first, color = cohort_day, group = cohort_day)) +
+  ggplot(aes(as.numeric(vis_bins)*bin_size, n_vis_to_first, color = cohort_day, group = cohort_day)) +
   geom_line() +
   geom_point() +
-  facet_grid(cohort_day~.)
+  facet_grid(rows = vars(cohort_day, prob_cond)) +
+  labs(x = "visit number", y = "number of visits to rewarding flower",
+       color = "day", title = focal_ind) 
 
+n_flowers <- onlychoices_plast %>%
+  filter(!(cohort == 4 & IdLabel %in% repeat_bats), n_vis > 200, pumping == 0) %>% 
+  group_by(day, IdLabel, prob_cond) %>% 
+  summarise(n_flowers = n_distinct(loc)) 
+
+n_flowers %>%
+  ggplot(aes(prob_cond, n_flowers, group = IdLabel)) +
+  geom_point() +
+  stat_smooth(method = lm, se = FALSE) 
+mean_n_flowers <- n_flowers %>% 
+  filter(prob_cond == 0.5) %>% 
+  group_by(IdLabel) %>% 
+  summarise(n_flowers = mean(n_flowers))
+  
+plasticity_predictions %>% 
+  left_join(n_flowers) %>% 
+  ggplot(aes(sampling, n_flowers)) +
+  geom_point() +
+  facet_grid(prob_cond ~ .) +
+  ylab("Total number of different flowers visited after the first 200 visits")
+  
 onlychoices_plast %>% 
   filter(IdLabel == focal_ind) %>% 
   left_join(sides) %>%
@@ -123,8 +309,7 @@ onlychoices_plast %>%
   facet_grid(cohort_day ~ phase) +
   theme_void()
 
-library(MCMCglmm)
-library(postMCMCglmm)
+
 #### statistics for plasticity
 # function for plotting autocorrelations from https://github.com/tmalsburg/MCMCglmm-intro
 plot.acfs <- function(x) {
@@ -145,72 +330,6 @@ mode_HPD <- function(mcmc) {
 prior.binom = list(R = list(V = diag(1), nu = 0.002),
                G = list(G1 = list(V = diag(2), nu = 1.002, alpha.mu = c(0, 0), 
                               alpha.V = diag(2) * 1e+07)))
-
-# beta_binomial2 <- custom_family(
-#   "beta_binomial2", dpars = c("mu", "phi"),
-#   links = c("logit", "log"), lb = c(NA, 0),
-#   type = "int", vars = "vint1[n]"
-# )
-# 
-# stan_funs <- "
-#   real beta_binomial2_lpmf(int y, real mu, real phi, int T) {
-#     return beta_binomial_lpmf(y | T, mu * phi, (1 - mu) * phi);
-#   }
-#   int beta_binomial2_rng(real mu, real phi, int T) {
-#     return beta_binomial_rng(T, mu * phi, (1 - mu) * phi);
-#   }
-#   
-# "
-# 
-# stanvars <- stanvar(scode = stan_funs, block = "functions")
-# 
-# log_lik_beta_binomial2 <- function(i, prep) {
-#   mu <- prep$dpars$mu[, i]
-#   phi <- prep$dpars$phi
-#   trials <- prep$data$vint1[i]
-#   y <- prep$data$Y[i]
-#   beta_binomial2_lpmf(y, mu, phi, trials)
-# }
-# 
-# posterior_predict_beta_binomial2 <- function(i, prep, ...) {
-#   mu <- prep$dpars$mu[, i]
-#   phi <- prep$dpars$phi
-#   trials <- prep$data$vint1[i]
-#   beta_binomial2_rng(mu, phi, trials)
-# }
-# 
-# posterior_epred_beta_binomial2 <- function(prep) {
-#   mu <- prep$dpars$mu
-#   trials <- prep$data$vint1
-#   trials <- matrix(trials, nrow = nrow(mu), ncol = ncol(mu), byrow = TRUE)
-#   mu * trials
-# }
-# 
-# set.seed(42)
-# samp_model <- brm(failures | vint(successes + failures) ~  prob_cen + weight + group*cohort +
-#                     (1 + prob_cen | IdLabel),
-#                   data = asymptotic_choices,
-#                   family = beta_binomial2,
-#                   stanvars = stanvars
-#                   )
-# summary(samp_model)
-# plot(samp_model)
-# mcmc_plot(samp_model, type = "acf_bar")
-# 
-# mcmc_plot(samp_model, type = "areas", prob = 0.95)
-# samp_model %>% 
-#   tidy(effects = "fixed", conf.method="HPDinterval")
-# VarCorr(samp_model)
-# samp_model$fit
-# 
-# samp_model %>% 
-#   tidy(effects = "fixed", conf.method="HPDinterval")
-# samp_model %>% 
-#   tidy(effects = "ran_pars", robust = TRUE)
-# 
-#   spread_draws(condition_mean[condition]) %>%
-#   median_qi()
-
 set.seed(42)
 # FULL MODEL
 # whole dataset
@@ -251,6 +370,25 @@ adj_repeatability <- function(df, test_prob) {
   mode_HPD(rep.samp)
 }
 
+set.seed(42)
+# streak model
+streak_model <- MCMCglmm(perc_exploit ~ as.factor(prob_cond)*miss_streak,
+                     random = ~us(1 + miss_streak):IdLabel,
+                     data = as.data.frame(streaks_plast %>% filter(n > 20)),
+                     family = "gaussian", pr = TRUE,
+                     prior = prior.binom, verbose = FALSE, saveX = TRUE, saveZ = TRUE,
+                     nitt = 200e+03, thin = 100, burnin = 100e+03)
+
+summary(streak_model) #  fixed effects: only prob_cen is significant (DIC = 144316.4)
+# Geweke plots
+geweke.plot(streak_model$VCV)
+plot(streak_model)
+
+# Autocorrelation
+plot.acfs(streak_model$VCV)
+
+streak_model$VCV %>% as.data.frame()
+
 # set.seed(1234)
 # samp_subset_model <- brm(failures | vint(successes + failures) ~ (1 | IdLabel),
 #                   data = asymptotic_choices %>% filter(prob_cond == test_prob),
@@ -285,7 +423,7 @@ write.table(samp_estimates, file = paste0(folder, "PlasticityEstimates.csv"), se
 
 predicted_values <- predict(object = UMM.samp, marginal = NULL, type = "response", use = "all")
 
-# # retreive slopes from model
+# # retrieve slopes from model
 sol <- UMM.samp$Sol %>%
  tidy()
 
@@ -329,19 +467,44 @@ plasticity_predictions %>%
   geom_abline() +
   geom_point()
 
-# plasticity_predictions %>% 
-#   filter(IdLabel == "Ind42") %>% 
-#   ggplot(aes(prob_cond, sampling, color = IdLabel, group = IdLabel)) +
-#   geom_point() +
-#   geom_line(stat = "smooth", method = glm, method.args = list(family = binomial), se = FALSE,
-#             color = "black", alpha = 0.3)
+pred_diffs <- plasticity_predictions %>% 
+  filter(prob_cond != 0.5) %>% 
+  group_by(IdLabel, slope, prob_cond) %>%
+  summarise(predicted_sampling = mean(predicted_sampling)) %>% 
+  mutate(pred_diff = predicted_sampling - lag(predicted_sampling)) %>% 
+  filter(!is.na(pred_diff)) 
+  
+pred_diffs %>% 
+  # left_join(emp_diffs) %>% 
+  ggplot(aes(slope, pred_diff)) +
+  geom_point() +
+  geom_smooth(method = lm)
+
+linear_slopes <- asymptotic_choices %>% 
+  select(IdLabel, prob_cond, sampling) %>% 
+  nest_by(IdLabel) %>%
+  mutate(lin_slope = lm(sampling ~ prob_cond, data = data) %>%
+           coef() %>%
+           pluck(2)) %>% 
+  select(-data)
+
+plasticity_predictions %>% 
+  left_join(linear_slopes) %>% 
+  ggplot(aes(slope, lin_slope)) +
+  geom_point() +
+  geom_smooth(method = lm)
+
+
+plasticity_predictions %>% 
+  left_join(emp_diffs) %>% 
+  ggplot(aes(slope, diff)) +
+  geom_point() +
+  geom_smooth(method = lm)
 
 write.table(plasticity_predictions, file = paste0(folder, "PlasticityPredictions.csv"),
             sep = ";", row.names = FALSE)
 
-
 prior.norandom = list(R = list(V = diag(1), nu = 0.002))
-
 set.seed(55)
 # model without random effects
 UMM.samp_cond <- MCMCglmm(cbind(failures, successes) ~ prob_cen + weight + group*cohort, 
@@ -366,30 +529,52 @@ binned_choices %>%
             mean_vis_crit = mean(vis_crit),
             sd_vis_crit = sd(vis_crit))
 
+# blocks to criterion
+binned_choices %>% 
+  filter(over_crit == 0) %>% 
+  group_by(IdLabel, cohort_day, prob_cond) %>% 
+  summarise(blocks_to_crit = n()) %>% 
+  ggplot(aes(prob_cond, blocks_to_crit, color = IdLabel)) +
+  geom_point() +
+  stat_smooth(aes(group = IdLabel), method = glm, se = FALSE)
+
 # Flexibilities
+
+rewarding_sides_flex <- onlychoices %>% 
+  filter(cond == "flex", !(cohort == 4 & IdLabel %in% repeat_bats)) %>% 
+  left_join(sides) %>% 
+  group_by(IdLabel, loc, day, side) %>% 
+  summarise(rewarding = max(rewarding)) %>% 
+  group_by(IdLabel, day, side) %>% 
+  summarise(rewarding_side = max(rewarding)) %>% 
+  select(IdLabel, day, side, rewarding_side)
 
 # remove data from repeating bats
 flex_exp <- onlychoices %>% 
   filter(cond == "flex", !(cohort == 4 & IdLabel %in% repeat_bats)) %>%
   select(-weight, -cond, -prob) %>% 
   group_by(day, IdLabel, phase) %>% 
+  left_join(sides) %>%
+  left_join(rewarding_sides_flex) %>%
   mutate(vis_phase = 1:n(),
          rev_vis_phase = n():1,
          vis_to_first = ifelse(rewarding == 1, 1, 0),
          vis_to_second = ifelse(rewarding == 2, 1, 0),
+         vis_to_firstside = ifelse(rewarding_side == 1, 1, 0), 
          cum_not_first = cumsum(ifelse(rewarding == 1, 0, 1)),
          cum_rewarded = cumsum(rewarded),
          cohort = factor(cohort))
 
 # graphical overview of individual bat's behaviour in flexibility experiment
-
+block_size <- 10
 binned_flex <- flex_exp %>% 
   group_by(day, IdLabel) %>% 
   mutate(n_vis = 1:n(),
-         vis_bins = cut(n_vis, breaks = seq(0, 3000, 20))) %>% 
+         vis_bins = cut(n_vis, breaks = seq(0, 3000, block_size))) %>% 
   group_by(IdLabel, cohort_day, vis_bins) %>% 
   summarise(n_vis_to_first = sum(vis_to_first),
             n_vis_to_second = sum(vis_to_second),
+            n_vis_to_firstside = sum(vis_to_firstside),
             n_total = n(),
             max_date = max(DateTime),
             phase = factor(round(mean(phase))),
@@ -398,15 +583,38 @@ binned_flex <- flex_exp %>%
          total_vis_to_second = sum(n_vis_to_second),
          rewarded = sum_rewarded > 0)
 
-focal_ind <- "Ind44"
-binned_flex %>% 
-  filter(IdLabel == focal_ind) %>% 
-  ggplot() +
-  geom_point(aes(block, n_vis_to_first, group = NULL, color = phase)) +
-  geom_line(aes(block, n_vis_to_first, group = NULL, color = phase)) +
-  geom_line(aes(block, n_vis_to_second, group = NULL), color = "black", alpha = 0.3) +
-  labs(y = "Number of visits to feeders that were rewarding in phase 1", title = focal_ind) +
-  facet_wrap(~cohort_day)
+plot_flexibilities <- function(tbl, group_size = 6) {
+  n_inds <- unique(tbl$IdLabel) %>% length()
+  rounded_inds <- (round(n_inds / group_size) + 1) * group_size
+  groups <- 1:rounded_inds %>% paste0("Ind", .) %>% split(ceiling(seq_along(.)/group_size))
+  map(groups, ~plot_flexibility(tbl, .x))
+}
+
+plot_flexibility <- function(tbl, inds, firstside = FALSE) {
+  inds <- unlist(inds)
+  plot <- tbl %>% 
+    filter(IdLabel %in% inds) %>%
+    ggplot() +
+    # geom_point(aes(block, n_vis_to_first, group = NULL, color = phase)) +
+    geom_line(aes(block, n_vis_to_first, group = NULL, color = phase)) +
+    geom_line(aes(block, n_vis_to_second, group = NULL), color = "black", alpha = 0.3) +
+    labs(x = paste("block of", block_size, "visits"),
+         y = "Number of visits to feeders that were rewarding in phase 1") +
+    facet_grid(IdLabel ~ cohort_day) +
+    geom_hline(yintercept = 2/12*block_size, linetype = 3)
+  if (firstside == TRUE) {
+    plot +
+      geom_line(aes(block, n_vis_to_firstside, group = NULL), color = "purple", alpha = 0.3)
+  } else {
+    plot
+  }
+}
+
+plot_flexibilities(binned_flex)
+
+plot_flexibility(binned_flex, c("Ind4", "Ind5", "Ind6", "Ind13", 
+                                "Ind21", "Ind26", "Ind31",
+                                "Ind37", "Ind41", "Ind43"), firstside = TRUE)
 
 # where did the focal bat fly to?
 flex_exp %>% 
@@ -416,21 +624,6 @@ flex_exp %>%
   ggplot(aes(x, y)) +
   geom_text(aes(label = rewarding, size = n)) +
   facet_grid(cohort_day ~ phase)
-
-# binned_flex2 <- flex_exp %>% 
-#   group_by(day, IdLabel, phase) %>%
-#   mutate(cum_vis_second = cumsum(vis_to_second)) %>% 
-#   filter(cum_vis_second > 1, phase == 2) %>%
-#   group_by(day, IdLabel) %>% 
-#   mutate(n_vis = 1:n(),
-#          vis_bins = cut(n_vis, breaks = seq(0, 3000, 20))) %>% 
-#   group_by(IdLabel, cohort_day, vis_bins) %>% 
-#   summarise(n_vis_to_first = sum(vis_to_first),
-#             n_vis_to_second = sum(vis_to_second),
-#             n_total = n(),
-#             max_date = max(DateTime),
-#             phase = factor(round(mean(phase)))) %>% 
-#   mutate(block = 1:n())
 
 # calculate the sampling behaviour in the last 50 visits of phase 1
 samp_before_phase2 <- flex_exp %>% 
@@ -455,12 +648,23 @@ flex_phase2 <- flex_exp %>%
   left_join(samp_before_phase2) %>% 
   group_by(IdLabel) %>% 
   mutate(dev_pers = abs(median(perseverance) - perseverance)) %>% 
-  filter(n_total > n_analysed - 1) # filter out the two bats that didn't make n_analysed visits
+  filter(n_total > n_analysed - 1) %>% # filter out the two bats that didn't make n_analysed visits
+  left_join(groups)
 
 # show bats with missing data
 flex_phase2 %>% 
   count(IdLabel) %>% 
   filter(n < 4)
+
+# how many visits in perseverance phase of reversal
+flex_exp %>% 
+  group_by(day, cohort_day, IdLabel, phase) %>%
+  mutate(cumsum_rewarded = cumsum(rewarded)) %>% 
+  filter(cumsum_rewarded == 0, phase == 2) %>% 
+  count(IdLabel, day, cohort_day) %>%
+  arrange(desc(n)) %>% 
+  ggplot(aes(IdLabel, n, color = IdLabel)) +
+  geom_point()
 
 # most perseverative (least flexible) and least perseverative (most flexible) bats
 flex_phase2 %>% 
@@ -488,13 +692,10 @@ plot(flex_model)
 geweke.plot(flex_model$VCV)
 
 
-prior.interceptslope = list(R = list(V = 1, nu = 0.002), 
-                        G = list(G1 = list(V = diag(2), nu = 1.002, alpha.mu = c(0, 0), 
-                                               alpha.V = diag(2) * 1e+07)))
+# prior.interceptslope = list(R = list(V = 1, nu = 0.002), 
+#                         G = list(G1 = list(V = diag(2), nu = 1.002, alpha.mu = c(0, 0), 
+#                                                alpha.V = diag(2) * 1e+07)))
 
-summary(flex_model)
-plot(flex_model)
-geweke.plot(flex_model$VCV)
 
 rep_flex <- flex_model$VCV[,"IdLabel"] /
   (flex_model$VCV[, "IdLabel"] + flex_model$VCV[, "units"] + pi^2/3)
@@ -505,12 +706,34 @@ rep_flex <- tibble(term = "rep__flexibility") %>%
   as_tibble())
 
 # correlation between plasticity and flexibility
-# slope_flex <- flex_phase2 %>%
-#   select(day, IdLabel, perseverance, flexibility) %>%
-#   full_join(slopes %>% mutate(day = 0)) %>% 
-#   mutate(neg_slope = -slope) %>% 
-#   full_join(intercepts %>% mutate(day = 0))
-# 
+slope_flex <- flex_phase2 %>%
+  select(day, IdLabel, perseverance, flexibility) %>%
+  full_join(slopes %>% mutate(day = 0)) %>%
+  mutate(neg_slope = -slope) %>%
+  full_join(intercepts %>% mutate(day = 0))
+
+slope_flex %>% 
+  group_by(IdLabel) %>% 
+  summarise(neg_slope = mean(neg_slope, na.rm = TRUE),
+            median_flexibility = median(flexibility, na.rm = TRUE)) %>% 
+  left_join(mean_n_flowers) %>% 
+  ggplot(aes(n_flowers, neg_slope)) +
+  geom_point() +
+  stat_smooth(method = lm) +
+  xlab("Mean number of visited flowers at 0.5 probability, after the first 200 visits") +
+  ylab("Plasticity (-slope)")
+
+slope_flex %>% 
+  group_by(IdLabel) %>% 
+  summarise(neg_slope = mean(neg_slope, na.rm = TRUE),
+            median_flexibility = median(flexibility, na.rm = TRUE)) %>% 
+  left_join(mean_n_flowers) %>% 
+  ggplot(aes(n_flowers, median_flexibility)) +
+  geom_point() +
+  stat_smooth(method = lm) +
+  xlab("Mean number of visited flowers at 0.5 probability, after the first 200 visits") +
+  ylab("Median flexibility")
+
 # asymptotic_choices %>% 
 #   group_by(IdLabel) %>% 
 #   summarise(mean_sampling = mean(sampling)) %>% 
@@ -636,3 +859,32 @@ flex_estimates <- tidy(flex_model, conf.int = TRUE) %>%
 
 write.table(flex_estimates, file = paste0(folder, "FlexibilityEstimates.csv"), sep = ";", row.names = FALSE)
 
+
+diffs <- plasticity_predictions %>% 
+  select(IdLabel, sampling, prob_cond) %>% 
+  filter(prob_cond != 0.5) %>% 
+  group_by(IdLabel, prob_cond) %>% 
+  summarise(sampling = mean(sampling)) %>% 
+  pivot_wider(id = IdLabel, names_from = prob_cond, values_from = sampling, names_prefix = "prob") %>% 
+  mutate(diff = prob0.83 - prob0.3) %>% 
+  select(IdLabel, diff)
+
+diff_preds <- plasticity_predictions %>% 
+  left_join(diffs) %>% 
+  group_by(IdLabel) %>% 
+  summarise(slope = mean(slope),
+            diff = mean(diff)) 
+diff_preds %>% 
+  ggplot(aes(slope, diff)) +
+  geom_point() +
+  stat_smooth(method = lm) +
+  annotate(geom = "text", x = -3, y = 0.1, label = lm_eqn(diff_preds), parse = TRUE)
+
+lm_eqn <- function(df){
+  m <- lm(diff ~ slope, data = df)
+  eq <- substitute(italic(y) == a + b %.% italic(x)*","~~italic(r)^2~"="~r2, 
+                   list(a = format(unname(coef(m)[1]), digits = 2),
+                        b = format(unname(coef(m)[2]), digits = 2),
+                        r2 = format(summary(m)$r.squared, digits = 3)))
+  as.character(as.expression(eq))
+}
